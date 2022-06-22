@@ -1,0 +1,16 @@
+.mid {
+  margin: 3rem 0 3rem 0;
+}
+
+.col-lg-4 {
+  text-align: center;
+}
+
+@media only screen and (max-width: 770px) {
+  .left {
+    margin-bottom: 1.2rem;
+  }
+  .mid {
+    margin: 0.8rem 0 3rem 0;
+  }
+}
