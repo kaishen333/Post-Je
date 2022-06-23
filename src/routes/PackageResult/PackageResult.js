@@ -1,25 +1,15 @@
-import React from "react";
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import './PackageResult.css';
+import Container from "react-bootstrap/Container";
+import "./PackageResult.css";
+import PackageSearchBar from "../../components/PackageSearchBar/PackageSearchBar";
+import PackageResultTable from "../../components/PackageResultTable/PackageResultTable";
 
-
-function PackageResult() {
+function CourierResult() {
   return (
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand href="/home">React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/courier">Compare Couriers</Nav.Link>
-            <Nav.Link href="/package">Packaging Calculator</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <Container>
+      <PackageSearchBar></PackageSearchBar>
+      <PackageResultTable></PackageResultTable>
+    </Container>
   );
-};
+}
 
-export default PackageResult;
+export default CourierResult;
