@@ -1,6 +1,6 @@
 
 const productRouter = require('./product');
 
-module.exports = (app, passport) => {
+module.exports = (app) => {
   productRouter(app);
 }
