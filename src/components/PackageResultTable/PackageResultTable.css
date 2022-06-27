@@ -1,0 +1,11 @@
+.sr-only {
+  display: none;
+}
+
+#pageDropDown {
+  margin-right: 1rem;
+}
+
+.react-bootstrap-table table {
+  table-layout: auto;
+}

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import "./PackageResultTable.css";
+
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";

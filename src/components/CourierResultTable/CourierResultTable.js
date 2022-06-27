@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import "./CourierResultTable.css";
+
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -22,6 +25,7 @@ function CourierResultTable() {
     1: "1",
     2: "2",
     3: "3",
+    4: "4",
   };
 
   const [courierList, setCourierList] = useState([]);
@@ -102,20 +106,19 @@ function CourierResultTable() {
     ], // A numeric array is also available. the purpose of above example is custom the text
   };
 
-
-  return(
+  return (
     <Container className="result-table">
-        <BootstrapTable
-          bootstrap4
-          keyField="id"
-          data={courierList}
-          columns={columns}
-          bordered={false}
-          pagination={paginationFactory(options)}
-          filter={filterFactory()}
-        />
-      </Container>
-  )
+      <BootstrapTable
+        bootstrap4
+        keyField="id"
+        data={courierList}
+        columns={columns}
+        bordered={false}
+        pagination={paginationFactory(options)}
+        filter={filterFactory()}
+      />
+    </Container>
+  );
 }
 
-export default CourierResultTable
+export default CourierResultTable;

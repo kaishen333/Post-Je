@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import './PackageSearchBar.css';
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -19,7 +21,7 @@ function PackageSearchBar() {
   };
 
   return (
-    <Container>
+    <Container className="bar">
       <h1>Compare courier services</h1>
       <Form>
         <Row>

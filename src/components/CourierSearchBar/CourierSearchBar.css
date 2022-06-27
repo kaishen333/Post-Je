@@ -1,0 +1,9 @@
+.bar {
+  margin: 1rem 0 0 0;
+}
+
+@media only screen and (max-width: 770px) {
+  .bar {
+    margin: 0.8rem 0 0 0;
+  }
+}

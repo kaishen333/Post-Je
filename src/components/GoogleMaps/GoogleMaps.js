@@ -1,4 +1,6 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import Container from "react-bootstrap/Container";
+import './GoogleMaps.css'
 
 function GoogleMaps() {
   //google maps constants
@@ -14,18 +16,20 @@ function GoogleMaps() {
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyDgx05Nh32WVIziXiOeWpZbbwywvfMPYzM">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
-        disableDoubleClickZoom={true}
-        mapTypeId="satellite"
-      >
-        {/* Child components, such as markers, info windows, etc. */}
-        <></>
-      </GoogleMap>
+      <Container className="googmaps">
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={15}
+          disableDoubleClickZoom={true}
+          mapTypeId="satellite"
+        >
+          {/* Child components, such as markers, info windows, etc. */}
+          <></>
+        </GoogleMap>
+      </Container>
     </LoadScript>
   );
 }
 
-export default GoogleMaps
+export default GoogleMaps;
