@@ -22,8 +22,8 @@ const { DB } = require('./config');
       id              INT             PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
       postcodeId      INT             NOT NULL,
       courierId       INT             NOT NULL,
-      lat             INT             NOT NULL,
-      long            INT             NOT NULL,
+      lat             DOUBLE          NOT NULL,
+      long            DOUBLE          NOT NULL,
       FOREIGN KEY (postcodeId) REFERENCES postcode(id),
       FOREIGN KEY (courierId) REFERENCES courier(id)
     );
