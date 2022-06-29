@@ -7,7 +7,7 @@ module.exports = async (app) => {
   const expressApp = await expressLoader(app);
 
   // Load API route handlers
-  await routeLoader(app, passport);
+  await routeLoader(app, expressApp);
   
   // Error Handler
   app.use((err, req, res, next) => {
