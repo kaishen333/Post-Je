@@ -47,6 +47,7 @@ function CourierResultTable() {
     {
       dataField: "username",
       text: "Pre-paid packaging suggestion",
+      sort: true,
     },
     {
       dataField: "eamil",

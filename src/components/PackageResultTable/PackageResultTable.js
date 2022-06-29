@@ -46,6 +46,7 @@ function PackageResultTable() {
     {
       dataField: "username",
       text: "Package Type",
+      sort: true,
     },
     {
       dataField: "eamil",

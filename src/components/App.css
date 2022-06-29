@@ -1,0 +1,15 @@
+.react-bootstrap-table th.sortable:not(:first-child) {
+  padding-bottom: 3.4rem;
+}
+
+.react-bootstrap-table > table > thead > tr > th .filter-label {
+  margin-top: 0.8rem;
+}
+
+#pageDropDown {
+  margin-right: 1rem;
+}
+
+.sr-only {
+  display: none;
+}
