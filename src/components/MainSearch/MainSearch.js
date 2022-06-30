@@ -34,20 +34,29 @@ function MainSearch() {
       .max(3, "Too Long!")
       .required("Weight is required")
       .positive(),
-    length: Yup.number().max(3, "Too Long!").positive(),
-    width: Yup.number().max(3, "Too Long!").positive(),
-    height: Yup.number().max(3, "Too Long!").positive(),
+    length: Yup.number()
+      .max(3, "Too Long!")
+      .required("Weight is required")
+      .positive(),
+    width: Yup.number()
+      .max(3, "Too Long!")
+      .required("Weight is required")
+      .positive(),
+    height: Yup.number()
+      .max(3, "Too Long!")
+      .required("Weight is required")
+      .positive(),
   });
 
   return (
     <Container className="search-tabs">
       <Tabs
-        defaultActiveKey="shpping"
-        transition={false}
-        id="noanim-tab-example"
+        defaultActiveKey="shipping"
+        transition={true}
+        id="search-tab"
         className="mb-3"
       >
-        <Tab eventKey="shpping" title="Shipping">
+        <Tab eventKey="shipping" title="Shipping">
           <h2>Compare courier services</h2>
           <Formik
             initialValues={{
