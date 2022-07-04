@@ -67,7 +67,8 @@ CREATE TABLE dropoff (
     locationid integer NOT NULL,
     courierid integer NOT NULL,
     lat double precision NOT NULL,
-    long double precision NOT NULL
+    long double precision NOT NULL,
+    name character(100) NOT NULL
 );
 
 
@@ -127,12 +128,13 @@ ALTER SEQUENCE location_id_seq OWNED BY location.id;
 CREATE TABLE package (
     id integer NOT NULL,
     courierid integer NOT NULL,
+    type character varying(100),
     length integer NOT NULL,
     width integer NOT NULL,
-    height integer NOT NULL,
-    price integer NOT NULL,
-    weight integer NOT NULL,
-    link character varying(100) NOT NULL
+    height integer,
+    price double precision NOT NULL,
+    weight double precision NOT NULL,
+    link character varying(500) NOT NULL
 );
 
 
@@ -195,6 +197,11 @@ COPY courier (id, name) FROM stdin;
 5	Ninja
 6	Pgeon
 7	Poslaju
+8	ParcelHub
+9	EasyParcel
+10	Mail Boxes Etc (MBE)
+11	iExpress
+12	FedEx
 \.
 
 
@@ -202,14 +209,28 @@ COPY courier (id, name) FROM stdin;
 -- Name: courier_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('courier_id_seq', 7, true);
+SELECT pg_catalog.setval('courier_id_seq', 12, true);
 
 
 --
 -- Data for Name: dropoff; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY dropoff (id, locationid, courierid, lat, long) FROM stdin;
+COPY dropoff (id, locationid, courierid, lat, long, name) FROM stdin;
+1	966	4	4.3250845539674856	101.15190815870295	J&T Express Perak - Kampar (PRK005)                                                                 
+2	322	8	5.3287549105308019	100.28472693372701	ParcelHub Bayan Baru                                                                                
+3	322	9	5.3255965793788445	100.28643178770849	EasyParcel                                                                                          
+4	322	11	5.3259385767504881	100.28652908158105	iExpress @ Bayan Baru, Penang                                                                       
+5	323	6	5.281751022672867	100.27128657084944	Pgeon Penang                                                                                        
+6	317	8	5.3494928905867463	100.29544871347977	Parcelhub Gelugor                                                                                   
+7	319	10	5.3328508596030879	100.29480107115617	Mail Boxes Etc (MBE)                                                                                
+8	319	2	5.3037849669234083	100.29451760909861	DHL Express Service Point (Bayan Lepas Free Industrial Estate)                                      
+9	319	2	5.3325716760938837	100.29336038468294	DHL eCommerce Premium ServicePoint - Bayan Lepas                                                    
+10	319	2	5.3325115956969098	100.29877199297766	DHL Express Service Point (Bayan Lepas)                                                             
+11	317	12	5.3540210351381567	100.308846296355	J&T Express Sunny Point (PEN404) Batu Uban                                                          
+12	319	3	100.26590397542881	5.3008565847941078	GD Express Sdn Bhd                                                                                  
+13	322	1	5.3013938895938093	100.27157147293272	City-Link Express Bayan Lepas                                                                       
+14	319	5	5.3338749710404691	100.28915068807895	Ninjavan Bukit Jambul                                                                               
 \.
 
 
@@ -217,7 +238,7 @@ COPY dropoff (id, locationid, courierid, lat, long) FROM stdin;
 -- Name: dropoff_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('dropoff_id_seq', 1, false);
+SELECT pg_catalog.setval('dropoff_id_seq', 14, true);
 
 
 --
@@ -2994,7 +3015,52 @@ SELECT pg_catalog.setval('location_id_seq', 2755, true);
 -- Data for Name: package; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY package (id, courierid, length, width, height, price, weight, link) FROM stdin;
+COPY package (id, courierid, type, length, width, height, price, weight, link) FROM stdin;
+33	5	Prepaid Box M Bundle (10)	320	250	130	125	10	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-m-size?variant=39501482917948
+34	5	Prepaid Box M Bundle (20)	320	250	130	238	10	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-m-size?variant=39501482885180
+5	5	Prepaid Padded Polymailer M\r\n	470	330	\N	12.5	8	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/individual-ninja-pack-prepaid-padded-polymailer-xs-s-m-size?variant=39501498712124
+4	5	Prepaid Padded Polymailer S	350	250	\N	9.5	3	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/individual-ninja-pack-prepaid-padded-polymailer-xs-s-m-size?variant=39501498646588
+3	5	Prepaid Padded Polymailer XS	230	170	\N	7.9000000000000004	1	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/individual-ninja-pack-prepaid-padded-polymailer-xs-s-m-size?variant=39501498613820
+6	5	Prepaid Padded Polymailer XS Bundle (10)	230	170	\N	75	1	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-xs-size?variant=32377212338236
+7	5	Prepaid Padded Polymailer XS Bundle (20)	230	170	\N	138	1	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-xs-size?variant=32377212371004
+8	5	Prepaid Padded Polymailer S Bundle (10)	350	250	\N	89	3	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-s-size?variant=32377234980924
+9	5	Prepaid Padded Polymailer S Bundle (20)	350	250	\N	170	3	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-s-size?variant=32377235013692
+11	5	Prepaid Padded Polymailer M Bundle (10)	470	330	\N	119	8	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-m-size?variant=32377242058812
+12	5	Prepaid Padded Polymailer M Bundle (20)	470	330	\N	230	8	https://my-packs.ninjavan.co/collections/padded-ninja-packs/products/padded-ninja-packs-bundle-m-size?variant=32377242091580
+13	5	Prepaid Polymailer XS 	230	170	\N	6.5	1	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/individual-ninja-pack-prepaid-polymailer-xs-s-m-lite-m-size?variant=39501493370940
+14	5	Prepaid Polymailer S	350	250	\N	7.9000000000000004	3	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/individual-ninja-pack-prepaid-polymailer-xs-s-m-lite-m-size?variant=39501493338172
+35	7	Prepaid Envelope (S) Orange	200	280	\N	7.3499999999999996	0.5	https://www.pos.com.my/pos-laju-prepaid-envelope-s-orange.html
+16	5	Prepaid Polymailer M	470	330	\N	11.5	8	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/individual-ninja-pack-prepaid-polymailer-xs-s-m-lite-m-size?variant=39501497794620
+17	5	Prepaid Polymailer XS  Bundle (10)	230	170	\N	59	1	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-xs-size?variant=31841911406652
+18	5	Prepaid Polymailer XS Bundle (20)	230	170	\N	112	1	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-xs-size?variant=31998886576188
+19	5	Prepaid Polymailer S Bundle (10)	350	250	\N	72	3	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-s-size?variant=31878695682108
+20	5	Prepaid Polymailer S Bundle (20)	350	250	\N	138	3	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-s-size?variant=31998881038396
+21	5	Prepaid Polymailer M LITE Bundle (10)	420	305	\N	99	5	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-lite-bundle-m-size?variant=32565364883516
+15	5	Prepaid Polymailer M LITE	420	305	\N	10.9	5	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/individual-ninja-pack-prepaid-polymailer-xs-s-m-lite-m-size?variant=39501493305404
+22	5	Prepaid Polymailer M LITE Bundle (20)	420	305	\N	178	5	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-lite-bundle-m-size?variant=32565364916284
+23	5	Prepaid Polymailer M Bundle (10)	470	330	\N	109	8	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-m-size?variant=31878698008636
+24	5	Prepaid Polymailer M Bundle (20)	470	330	\N	210	8	https://my-packs.ninjavan.co/collections/ninja-packs-1/products/ninja-packs-m-size?variant=31998866653244
+25	5	Prepaid Box XS	220	150	90	8.9000000000000004	2	https://my-packs.ninjavan.co/collections/prepaid-box/products/individual-ninja-pack-prepaid-box-xs-s-m-size
+26	5	Prepaid Box S	260	200	110	10.9	5	https://my-packs.ninjavan.co/collections/prepaid-box/products/individual-ninja-pack-prepaid-box-xs-s-m-size?variant=39501556154428
+27	5	Prepaid Box M	320	250	130	12.9	10	https://my-packs.ninjavan.co/collections/prepaid-box/products/individual-ninja-pack-prepaid-box-xs-s-m-size?variant=39501556187196
+28	5	Prepaid Box XS Bundle (10)	220	150	90	79	2	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-xs-size?variant=39501478428732
+29	5	Prepaid Box XS Bundle (20)	220	150	90	150	2	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-xs-size?variant=39501478395964
+30	5	Prepaid Box S Bundle (10)	260	200	110	105	5	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-s-size?variant=39501479706684
+31	5	Prepaid Box S Bundle (20)	260	200	110	198	5	https://my-packs.ninjavan.co/collections/prepaid-box/products/ninja-pack-bundle-prepaid-box-s-size?variant=39501479673916
+36	7	Prepaid Envelope (M) Orange	260	330	\N	10.18	1	https://www.pos.com.my/pos-laju-prepaid-envelope-m-orange.html
+37	7	Prepaid Envelope (L) Orange	320	380	\N	13.01	2	https://www.pos.com.my/poslaju-prepaid-envelope-l-orange.html
+38	7	Prepaid Envelope (S) Blue	280	200	\N	13.390000000000001	0.5	https://www.pos.com.my/pos-laju-prepaid-envelope-s-blue.html
+39	7	Prepaid Envelope (M) Blue	260	330	\N	19.710000000000001	1	https://www.pos.com.my/pos-laju-prepaid-envelope-m-blue.html
+40	7	Prepaid Envelope (L) Blue	320	380	\N	31.030000000000001	2	https://www.pos.com.my/poslaju-prepaid-envelope-l-blue.html
+42	7	Prepaid Economy Envelope (S) Land	280	200	\N	4.5	0.5	https://www.pos.com.my/prabayar-ekonomi-envelope-land-size-s.html
+43	7	Prepaid Economy Envelope (M) Land	350	270	\N	6	1	https://www.pos.com.my/prabayar-ekonomi-envelope-land-size-m.html
+44	7	Prepaid Economy Envelope (L) Land	450	320	\N	8	2	https://www.pos.com.my/prabayar-ekonomi-envelope-land-size-l.html
+45	7	Prepaid Economy Envelope (S) Surface	280	200	\N	8	0.5	https://www.pos.com.my/prabayar-ekonomi-envelope-surface-size-s.html
+47	7	Prepaid Economy Envelope (M) Surface	350	270	\N	11	1	https://www.pos.com.my/prabayar-ekonomi-envelope-surface-size-m.html
+48	7	Prepaid Economy Envelope (L) Surface	450	320	\N	18	2	https://www.pos.com.my/prabayar-ekonomi-envelope-surface-size-l.html
+49	7	Prepaid Box (M) Blue 	340	250	150	67.819999999999993	5	https://www.pos.com.my/pos-laju-prepaid-box-blue-m.html
+50	7	Prepaid Box (M) Orange 	340	150	250	19.989999999999998	5	https://www.pos.com.my/pos-laju-prepaid-box-orange-m.html
+51	7	Prepaid Box (L) Orange	380	320	200	29.989999999999998	10	https://www.pos.com.my/pos-laju-prepaid-box-l-orange.html
 \.
 
 
@@ -3002,7 +3068,7 @@ COPY package (id, courierid, length, width, height, price, weight, link) FROM st
 -- Name: package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('package_id_seq', 1, false);
+SELECT pg_catalog.setval('package_id_seq', 51, true);
 
 
 --

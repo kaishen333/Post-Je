@@ -24,11 +24,12 @@ CREATE TABLE IF NOT EXISTS dropOff (
 CREATE TABLE IF NOT EXISTS package (
     id SERIAL PRIMARY KEY,
     courierId INT NOT NULL,
+    type VARCHAR(100),
     length INT NOT NULL,
     width INT NOT NULL,
-    height INT NOT NULL,
-    price INT NOT NULL,
-    weight INT NOT NULL,
+    height INT,
+    price FLOAT NOT NULL,
+    weight FLOAT NOT NULL,
     link VARCHAR(100) NOT NULL,
     FOREIGN KEY (courierId) REFERENCES courier(id)
 );
