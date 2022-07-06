@@ -67,67 +67,88 @@ function MainSearch() {
               width: "",
               height: "",
             }}
-            validationSchema={courierSchema}
-            validateOnBlur
-            onSubmit={async (values) => {
-              const { to, from, weight, length, width, height } = values;
-              //await handleLogin({ username: email, password });
-            }}
-            render={({
-              handleChange,
-              handleSubmit,
-              handleBlur,
+          >
+            {" "}
+            {({
               values,
               errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
             }) => (
               <Form>
                 <Row className="mb-3">
-                  <Form.Group as={Col} md="4" controlId="validationCustom01">
+                  <Form.Group as={Col} md="4" controlId="formToZip">
                     <Form.Label>To</Form.Label>
                     <Form.Control
                       type="text"
+                      name="to"
                       placeholder="Zip"
-                      pattern="[0-9]{5}"
                       required
+                      // onChange={handleChange}
+                      // onBlur={handleBlur}
+                      // value={values.to}
                     />
                   </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="validationCustom02">
+                  <Form.Group as={Col} md="4" controlId="formFromZip">
                     <Form.Label>From</Form.Label>
                     <Form.Control
                       type="text"
+                      name="from"
                       placeholder="Zip"
-                      pattern="[0-9]{5}"
                       required
+                      // onChange={handleChange}
+                      // onBlur={handleBlur}
+                      // value={values.from}
                     />
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} md="3" controlId="validationCustom03">
+                  <Form.Group as={Col} md="3" controlId="formWeight">
                     <Form.Label>Weight (KG)</Form.Label>
-                    <Form.Control type="double" placeholder="0.5" required />
+                    <Form.Control
+                      type="double"
+                      name="weight"
+                      placeholder="0.5"
+                      required
+                      // onChange={handleChange}
+                      // onBlur={handleBlur}
+                      // value={values.weight}
+                    />
                   </Form.Group>
-                  <Form.Group as={Col} md="5" controlId="validationCustom04">
+                  <Form.Group as={Col} md="5" controlId="formDimension">
                     <Form.Label>Dimensions (CM)</Form.Label>
                     <div className="input-group mb-3">
                       <Form.Control
                         type="text"
+                        name="length"
                         placeholder="L"
                         aria-label="L"
-                        required
+                        // onChange={handleChange}
+                        // onBlur={handleBlur}
+                        // value={values.leght}
                       />
                       <span className="input-group-text">x</span>
                       <Form.Control
                         type="text"
+                        name="width"
                         placeholder="W"
                         aria-label="W"
-                        required
+                        // onChange={handleChange}
+                        // onBlur={handleBlur}
+                        // value={values.width}
                       />
                       <span className="input-group-text">x</span>
                       <Form.Control
                         type="text"
+                        name="height"
                         placeholder="H"
                         aria-label="H"
-                        required
+                        // onChange={handleChange}
+                        // onBlur={handleBlur}
+                        // value={values.height}
                       />
                     </div>
                   </Form.Group>
@@ -144,76 +165,72 @@ function MainSearch() {
                 </Row>
               </Form>
             )}
-          />
+          </Formik>
         </Tab>
 
         <Tab eventKey="parcel" title="Parcel">
           <h2>Shipment Package Calculator</h2>
-          <Formik
-            initialValues={{
-              weight: "",
-              length: "",
-              width: "",
-              height: "",
-            }}
-            validationSchema={parcelSchema}
-            validateOnBlur
-            onSubmit={async (values) => {
-              const { weight, length, width, height } = values;
-              //await handleLogin({ username: email, password });
-            }}
-            render={({
-              handleChange,
-              handleSubmit,
-              handleBlur,
-              values,
-              errors,
-            }) => (
-              <Form>
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="5" controlId="validationCustom04">
-                    <Form.Label>Dimensions (CM)</Form.Label>
-                    <div className="input-group mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="L"
-                        aria-label="L"
-                        required
-                      />
-                      <span className="input-group-text">x</span>
-                      <Form.Control
-                        type="text"
-                        placeholder="W"
-                        aria-label="W"
-                        required
-                      />
-                      <span className="input-group-text">x</span>
-                      <Form.Control
-                        type="text"
-                        placeholder="H"
-                        aria-label="H"
-                        required
-                      />
-                    </div>
-                  </Form.Group>
-                  <Form.Group as={Col} md="3" controlId="validationCustom03">
-                    <Form.Label>Weight (KG)</Form.Label>
-                    <Form.Control type="double" placeholder="0.5" required />
-                  </Form.Group>
-                  <div className="col-md-2 mb-3">
-                    <Button
-                      variant="success"
-                      size="lg"
-                      className="mt-4"
-                      type="submit"
-                    >
-                      Search
-                    </Button>
-                  </div>
-                </Row>
-              </Form>
-            )}
-          />
+
+          <Form>
+            <Row className="mb-3">
+              <Form.Group as={Col} md="5" controlId="formDimension">
+                <Form.Label>Dimensions (CM)</Form.Label>
+                <div className="input-group mb-3">
+                  <Form.Control
+                    type="text"
+                    name="length"
+                    placeholder="L"
+                    aria-label="L"
+                    // onChange={handleChange}
+                    // onBlur={handleBlur}
+                    // value={values.leght}
+                  />
+                  <span className="input-group-text">x</span>
+                  <Form.Control
+                    type="text"
+                    name="width"
+                    placeholder="W"
+                    aria-label="W"
+                    // onChange={handleChange}
+                    // onBlur={handleBlur}
+                    // value={values.width}
+                  />
+                  <span className="input-group-text">x</span>
+                  <Form.Control
+                    type="text"
+                    name="height"
+                    placeholder="H"
+                    aria-label="H"
+                    // onChange={handleChange}
+                    // onBlur={handleBlur}
+                    // value={values.height}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group as={Col} md="3" controlId="formWeight">
+                <Form.Label>Weight (KG)</Form.Label>
+                <Form.Control
+                  type="double"
+                  name="weight"
+                  placeholder="0.5"
+                  required
+                  // onChange={handleChange}
+                  // onBlur={handleBlur}
+                  // value={values.weight}
+                />
+              </Form.Group>
+              <div className="col-md-2 mb-3">
+                <Button
+                  variant="success"
+                  size="lg"
+                  className="mt-4"
+                  type="submit"
+                >
+                  Search
+                </Button>
+              </div>
+            </Row>
+          </Form>
         </Tab>
       </Tabs>
     </Container>

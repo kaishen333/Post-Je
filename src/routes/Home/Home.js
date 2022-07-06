@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Slider from "react-slick";
-
+import TestFormik from "../../components/MainSearch/TestFormik";
 function Home() {
   //Carousell settings
   var settings = {
@@ -63,11 +63,13 @@ function Home() {
             Learn more
           </a>
         </Col>
-        <Col md={7}>
+        {/*<Col md={7}>
           <MainSearch></MainSearch>
+        </Col>*/}
+        <Col md={7}>
+          <TestFormik></TestFormik>
         </Col>
       </Row>
-
       <Slider {...settings} style={{ margin: "1.2rem 0 4rem 0" }}>
         <div>
           <img
