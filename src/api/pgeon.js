@@ -1,49 +1,22 @@
-import API from './client';
+var myHeaders = new Headers();
+myHeaders.append("apikey", "V6M4f74h9UVB5akc");
+myHeaders.append("Content-Type", "application/json");
 
-// API interface for loading the user's cart
-export const fetchCart = async () => {
-  try {
-    const response = await API.get(`carts/mine`);
+var raw = JSON.stringify({
+  "service": "PD",
+  "from_point": "PGEON_P_E",
+  "to_postcode": "11700",
+  "weight": "10"
+});
 
-    return response.data;
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
 
-  } catch (err) {
-    throw err.response.data;
-  }
-}
-
-// API interface for adding a product to a user's cart
-export const addToCart = async (productId, qty) => {
-  try {
-    const response = await API.post(`carts/mine/items`, { productId, qty });
-
-    return response.data;
-
-  } catch(err) {
-    throw err.response.data;
-  }
-}
-
-// API interface for removing a product from a user's cart
-export const removeFromCart = async (cartItemId) => {
-  try {
-    const response = await API.delete(`carts/mine/items/${cartItemId}`);
-
-    return response.data;
-
-  } catch(err) {
-    throw err.response.data;
-  }
-}
-
-// API interface for checking out a user's cart
-export const checkout = async (cartId, paymentInfo) => {
-  try {
-    const response = await API.post(`carts/mine/checkout`, { cartId, paymentInfo });
-
-    return response.data;
-
-  } catch(err) {
-    throw err.response.data;
-  }
-}
+fetch("https://public-api-sandbox.pgeon.delivery/public/rate", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
