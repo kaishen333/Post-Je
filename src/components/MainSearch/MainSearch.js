@@ -1,63 +1,34 @@
-import React, { useEffect, useState } from "react";
-import "./MainSearch.css";
-
+import React, { useState } from "react";
+import { Formik, Field, Form } from "formik";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-
-import { Formik } from "formik";
+import "./MainSearch.css";
 import * as Yup from "yup";
 
 function MainSearch() {
-  const courierSchema = Yup.object().shape({
-    to: Yup.number()
-      .matches(/([0-9]{5})/, "invalid zip")
-      .required("Zip code is required"),
-    from: Yup.number()
-      .matches(/([0-9]{5})/, "invalid zip")
-      .required("Zip code is required"),
-    weight: Yup.number()
-      .max(3, "Too Long!")
-      .required("Weight is required")
-      .positive(),
-    length: Yup.number().max(3, "Too Long!").positive(),
-    width: Yup.number().max(3, "Too Long!").positive(),
-    height: Yup.number().max(3, "Too Long!").positive(),
-  });
-
-  const parcelSchema = Yup.object().shape({
-    weight: Yup.number()
-      .max(3, "Too Long!")
-      .required("Weight is required")
-      .positive(),
-    length: Yup.number()
-      .max(3, "Too Long!")
-      .required("Weight is required")
-      .positive(),
-    width: Yup.number()
-      .max(3, "Too Long!")
-      .required("Weight is required")
-      .positive(),
-    height: Yup.number()
-      .max(3, "Too Long!")
-      .required("Weight is required")
-      .positive(),
-  });
-
+  const [activeIndex, setActiveIndex] = useState(1);
+  const handleClick = (index) => setActiveIndex(index);
+  const checkActive = (index, className) =>
+    activeIndex === index ? className : "";
+  const zipregex = /([0-9]{5})/;
   return (
-    <Container className="search-tabs">
-      <Tabs
-        defaultActiveKey="shipping"
-        transition={true}
-        id="search-tab"
-        className="mb-3"
-      >
-        <Tab eventKey="shipping" title="Shipping">
-          <h2>Compare courier services</h2>
+    <Container>
+      <div className="tabs">
+        <button
+          className={`tab ${checkActive(1, "active")}`}
+          onClick={() => handleClick(1)}
+        >
+          <h5>Courier</h5>
+        </button>
+        <button
+          className={`tab ${checkActive(2, "active")}`}
+          onClick={() => handleClick(2)}
+        >
+          <h5>Package</h5>
+        </button>
+      </div>
+      <div className="panels">
+        <div className={`panel ${checkActive(1, "active")}`}>
           <Formik
             initialValues={{
               to: "",
@@ -67,172 +38,257 @@ function MainSearch() {
               width: "",
               height: "",
             }}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 1000);
+            }}
+            validationSchema={Yup.object({
+              to: Yup.string()
+                .matches(zipregex, "invalid zip")
+                .required("Zip code is required"),
+              from: Yup.string()
+                .matches(zipregex, "invalid zip")
+                .required("zip code is required"),
+              weight: Yup.number().required("Weight is required").positive(),
+              length: Yup.number().positive(),
+              width: Yup.number().positive(),
+              height: Yup.number().positive(),
+            })}
           >
-            {" "}
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
+            {(formik, isSubmitting) => (
               <Form>
                 <Row className="mb-3">
-                  <Form.Group as={Col} md="4" controlId="formToZip">
-                    <Form.Label>To</Form.Label>
-                    <Form.Control
-                      type="text"
+                  <div className="form-group col-md-4">
+                    <label htmlFor="To">To</label>
+                    <Field
                       name="to"
+                      className={
+                        formik.touched.to && formik.errors.to
+                          ? "form-control is-invalid"
+                          : "form-control"
+                      }
+                      type="string"
                       placeholder="Zip"
                       required
-                      // onChange={handleChange}
-                      // onBlur={handleBlur}
-                      // value={values.to}
                     />
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="formFromZip">
-                    <Form.Label>From</Form.Label>
-                    <Form.Control
-                      type="text"
+                    {formik.touched.to && formik.errors.to ? (
+                      <div className="invalid-zip">{formik.errors.to}</div>
+                    ) : null}
+                  </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="from">From</label>
+                    <Field
                       name="from"
+                      className={
+                        formik.touched.from && formik.errors.from
+                          ? "form-control is-invalid"
+                          : "form-control"
+                      }
+                      type="string"
                       placeholder="Zip"
                       required
-                      // onChange={handleChange}
-                      // onBlur={handleBlur}
-                      // value={values.from}
                     />
-                  </Form.Group>
+                    {formik.touched.from && formik.errors.from ? (
+                      <div className="invalid-zip">{formik.errors.from}</div>
+                    ) : null}
+                  </div>
                 </Row>
+
                 <Row className="mb-3">
-                  <Form.Group as={Col} md="3" controlId="formWeight">
-                    <Form.Label>Weight (KG)</Form.Label>
-                    <Form.Control
-                      type="double"
+                  <div className="form-group col-md-3">
+                    <label htmlFor="weight">Weight (KG)</label>
+                    <Field
                       name="weight"
+                      type="number"
                       placeholder="0.5"
+                      className={
+                        formik.touched.weight && formik.errors.weight
+                          ? "form-control is-invalid"
+                          : "form-control"
+                      }
                       required
-                      // onChange={handleChange}
-                      // onBlur={handleBlur}
-                      // value={values.weight}
                     />
-                  </Form.Group>
-                  <Form.Group as={Col} md="5" controlId="formDimension">
-                    <Form.Label>Dimensions (CM)</Form.Label>
+                    {formik.touched.weight && formik.errors.weight ? (
+                      <div className="invalid-weight">
+                        {formik.errors.weight}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="form-group col-md-7">
+                    <label htmlFor="dimensions">Dimensions (CM)</label>
                     <div className="input-group mb-3">
-                      <Form.Control
+                      <Field
                         type="text"
                         name="length"
                         placeholder="L"
-                        aria-label="L"
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // value={values.leght}
+                        className={
+                          formik.touched.length && formik.errors.length
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
                       />
+
                       <span className="input-group-text">x</span>
-                      <Form.Control
+                      <Field
                         type="text"
                         name="width"
                         placeholder="W"
-                        aria-label="W"
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // value={values.width}
+                        className={
+                          formik.touched.width && formik.errors.width
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
                       />
                       <span className="input-group-text">x</span>
-                      <Form.Control
+                      <Field
                         type="text"
                         name="height"
                         placeholder="H"
-                        aria-label="H"
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
-                        // value={values.height}
+                        className={
+                          formik.touched.height && formik.errors.height
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
                       />
                     </div>
-                  </Form.Group>
-                  <div className="col-md-2 mb-3">
-                    <Button
-                      variant="success"
-                      size="lg"
-                      className="mt-4"
+                    {formik.touched.length && formik.errors.length ? (
+                      <div className="invalid-length">
+                        {formik.errors.length}
+                      </div>
+                    ) : null}
+                    {formik.touched.width && formik.errors.width ? (
+                      <div className="invalid-width">{formik.errors.width}</div>
+                    ) : null}
+                    {formik.touched.height && formik.errors.height ? (
+                      <div className="invalid-height">
+                        {formik.errors.height}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="form-group">
+                    <button
                       type="submit"
+                      className="btn btn-primary"
+                      disabled={isSubmitting}
                     >
-                      Search
-                    </Button>
+                      {isSubmitting ? "Please wait..." : "Submit"}
+                    </button>
                   </div>
                 </Row>
               </Form>
             )}
           </Formik>
-        </Tab>
-
-        <Tab eventKey="parcel" title="Parcel">
-          <h2>Shipment Package Calculator</h2>
-
-          <Form>
-            <Row className="mb-3">
-              <Form.Group as={Col} md="5" controlId="formDimension">
-                <Form.Label>Dimensions (CM)</Form.Label>
-                <div className="input-group mb-3">
-                  <Form.Control
-                    type="text"
-                    name="length"
-                    placeholder="L"
-                    aria-label="L"
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.leght}
-                  />
-                  <span className="input-group-text">x</span>
-                  <Form.Control
-                    type="text"
-                    name="width"
-                    placeholder="W"
-                    aria-label="W"
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.width}
-                  />
-                  <span className="input-group-text">x</span>
-                  <Form.Control
-                    type="text"
-                    name="height"
-                    placeholder="H"
-                    aria-label="H"
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.height}
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group as={Col} md="3" controlId="formWeight">
-                <Form.Label>Weight (KG)</Form.Label>
-                <Form.Control
-                  type="double"
-                  name="weight"
-                  placeholder="0.5"
-                  required
-                  // onChange={handleChange}
-                  // onBlur={handleBlur}
-                  // value={values.weight}
-                />
-              </Form.Group>
-              <div className="col-md-2 mb-3">
-                <Button
-                  variant="success"
-                  size="lg"
-                  className="mt-4"
-                  type="submit"
-                >
-                  Search
-                </Button>
-              </div>
-            </Row>
-          </Form>
-        </Tab>
-      </Tabs>
+        </div>
+        <div className={`panel ${checkActive(2, "active")}`}>
+          <Formik
+            initialValues={{
+              weight: "",
+              length: "",
+              width: "",
+              height: "",
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 1000);
+            }}
+            validationSchema={Yup.object({
+              weight: Yup.number().required("Weight is required").positive(),
+              length: Yup.number().positive(),
+              width: Yup.number().positive(),
+              height: Yup.number().positive(),
+            })}
+          >
+            {(formik, isSubmitting) => (
+              <Form>
+                <Row className="mb-3">
+                  <div className="form-group col-md-7">
+                    <label htmlFor="dimensions">Dimensions (CM)</label>
+                    <div className="input-group mb-3">
+                      <Field
+                        type="text"
+                        name="length"
+                        placeholder="L"
+                        className={
+                          formik.touched.length && formik.errors.length
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
+                      />
+                      <span className="input-group-text">x</span>
+                      <Field
+                        type="text"
+                        name="width"
+                        placeholder="W"
+                        className={
+                          formik.touched.width && formik.errors.width
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
+                      />
+                      <span className="input-group-text">x</span>
+                      <Field
+                        type="text"
+                        name="height"
+                        placeholder="H"
+                        className={
+                          formik.touched.height && formik.errors.height
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
+                      />
+                    </div>
+                    {formik.touched.length && formik.errors.length ? (
+                      <div className="invalid-length">
+                        {formik.errors.length}
+                      </div>
+                    ) : null}
+                    {formik.touched.width && formik.errors.width ? (
+                      <div className="invalid-width">{formik.errors.width}</div>
+                    ) : null}
+                    {formik.touched.height && formik.errors.height ? (
+                      <div className="invalid-height">
+                        {formik.errors.height}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="form-group col-md-4">
+                    <label htmlFor="weight">Weight (KG)</label>
+                    <Field
+                      name="weight"
+                      type="number"
+                      placeholder="0.5"
+                      className={
+                        formik.touched.weight && formik.errors.weight
+                          ? "form-control is-invalid"
+                          : "form-control"
+                      }
+                      required
+                    />
+                    {formik.touched.weight && formik.errors.weight ? (
+                      <div className="invalid-weight">
+                        {formik.errors.weight}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="form-group">
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Please wait..." : "Submit"}
+                    </button>
+                  </div>
+                </Row>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
     </Container>
   );
 }
