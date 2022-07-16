@@ -5,7 +5,7 @@ import googleMapsReducer from "./googleMaps/GoogleMaps.reducer";
 
 export default combineReducers({
   package: packageReducer,
-  courierReducer: courierReducer,
+  couriers: courierReducer,
   googleMaps: googleMapsReducer,
 });
 

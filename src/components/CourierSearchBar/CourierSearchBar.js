@@ -4,9 +4,19 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "./CourierSearchBar.css";
 import * as Yup from "yup";
+import { loadCourier } from "../../store/courier/Courier.actions";
+import { useDispatch } from 'react-redux';
 
 function CourierSearchBar() {
   const zipregex = /([0-9]{5})/;
+
+
+  const dispatch = useDispatch();
+
+  async function search (values) {
+    await dispatch(loadCourier(values));
+  }
+
   return (
     <Container className="bar">
       <h1>Compare courier services</h1>
@@ -19,12 +29,9 @@ function CourierSearchBar() {
           width: "",
           height: "",
         }}
-        onSubmit={(values, { setSubmitting })=> {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 1000);
-        } }
+        onSubmit={(values) => {
+          search(values);
+        }}
         validationSchema={Yup.object({
           to: Yup.string()
             .matches(zipregex, "invalid zip")

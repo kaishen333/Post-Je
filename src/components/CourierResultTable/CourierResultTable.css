@@ -1,5 +1,4 @@
-
 .react-bootstrap-table table {
   table-layout: auto;
+  vertical-align: middle;
 }
-
