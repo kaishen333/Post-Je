@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCourier } from "../../apis/courier";
+import { fetchCourier } from "../../api/courier";
 
 export const loadCourier = createAsyncThunk(
   "courier/loadCourier",
-  async (params, thunkAPI) => {
+  async (values, thunkAPI) => {
+    console.log(values);
     try {
       const response = await fetchCourier();
       return {

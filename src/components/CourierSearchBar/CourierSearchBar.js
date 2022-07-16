@@ -19,12 +19,12 @@ function CourierSearchBar() {
           width: "",
           height: "",
         }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting })=> {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
           }, 1000);
-        }}
+        } }
         validationSchema={Yup.object({
           to: Yup.string()
             .matches(zipregex, "invalid zip")

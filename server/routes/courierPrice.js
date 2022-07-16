@@ -5,5 +5,7 @@ const ProductService = require('../services/courierPriceService');
 const ProductServiceInstance = new ProductService();
 
 module.exports = (app) => {
+    app.use('/api', router);
+
 
 }

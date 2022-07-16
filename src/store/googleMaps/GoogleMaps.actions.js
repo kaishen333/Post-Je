@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchGoogleMaps } from "../../apis/google-maps";
+import { fetchGoogleMaps } from "../../api/google-maps";
 
 export const loadGoogleMaps = createAsyncThunk(
   "courier/loadGoogleMaps",

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchPackage } from "../../apis/package";
+import { fetchPackage } from "../../api/package";
 
 export const loadPackage = createAsyncThunk(
   "courier/loadPackage",
