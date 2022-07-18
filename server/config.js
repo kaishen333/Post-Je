@@ -1,10 +1,11 @@
+
 module.exports = {
   DB: {
-    PGHOST: process.env.PGHOST,
-    PGUSER: process.env.PGUSER,
-    PGDATABASE: process.env.PGDATABASE,
-    PGPASSWORD: process.env.PGPASSWORD,
-    PGPORT: process.env.PGPORT
+    PGHOST: process.env.REACT_APP_PGHOST,
+    PGUSER: process.env.REACT_APP_PGUSER,
+    PGDATABASE: process.env.REACT_APP_PGDATABASE,
+    PGPASSWORD: process.env.REACT_APP_PGPASSWORD,
+    PGPORT: process.env.REACT_APP_PGPORT
   },
-  PORT: process.env.SERVER_PORT
+  PORT: 3000 
 }

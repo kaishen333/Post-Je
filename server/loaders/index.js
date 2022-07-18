@@ -5,7 +5,7 @@ module.exports = async (app) => {
 
   // Load Express middlewares
   const expressApp = await expressLoader(app);
-
+  
   // Load API route handlers
   await routeLoader(app, expressApp);
   

@@ -3,7 +3,7 @@ import API from "./client";
 // API interface for loading a user's order by order ID
 export const fetchCourier = async (values) => {
   try {
-    const response = await API.get(`orders?to=${values.to}&from=${values.from}&weight=${values.weight}`);
+    const response = await API.get(`orders/${values.to}/${values.from}/${values.weight}`);
 
     return response.data;
 
