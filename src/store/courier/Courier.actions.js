@@ -6,7 +6,7 @@ export const loadCourier = createAsyncThunk(
   async (values, thunkAPI) => {
     console.log(values);
     try {
-      const response = await fetchCourier();
+      const response = await fetchCourier(values);
       return {
         couriers: response,
       };

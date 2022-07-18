@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadCourier } from "./Courier.actions";
 
-const initialState = { id: "", name: "", username: "", email: "", order: "" };
+const initialState = {};
 
 const courierSlice = createSlice({
   name: "courier",
