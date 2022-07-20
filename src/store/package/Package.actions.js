@@ -3,9 +3,10 @@ import { fetchPackage } from "../../api/package";
 
 export const loadPackage = createAsyncThunk(
   "courier/loadPackage",
-  async (params, thunkAPI) => {
+  async (values, thunkAPI) => {
+    console.log(values);
     try {
-      const response = await fetchPackage();
+      const response = await fetchPackage(values);
       return {
         package: response,
       };

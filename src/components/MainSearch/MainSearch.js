@@ -4,6 +4,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "./MainSearch.css";
 import * as Yup from "yup";
+import { loadCourier } from "../../store/courier/Courier.actions";
+import { loadPackage } from "../../store/package/Package.actions.js";
+import { useDispatch } from "react-redux";
 
 function MainSearch() {
   const [activeIndex, setActiveIndex] = useState(1);
@@ -11,6 +14,17 @@ function MainSearch() {
   const checkActive = (index, className) =>
     activeIndex === index ? className : "";
   const zipregex = /([0-9]{5})/;
+
+  const dispatch = useDispatch();
+  async function searchCourier(values) {
+    window.location = "/courier";
+    await dispatch(loadCourier(values));
+  }
+  async function searchPackage(values) {
+    window.location = "/package";
+    await dispatch(loadPackage(values));
+  }
+
   return (
     <Container>
       <div className="tabs">
@@ -38,18 +52,25 @@ function MainSearch() {
               width: "",
               height: "",
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 1000);
+            onSubmit={(values) => {
+              searchCourier(values);
             }}
             validationSchema={Yup.object({
               to: Yup.string()
                 .matches(zipregex, "invalid zip")
+                .test(
+                  "len",
+                  "Must be exactly 5 characters",
+                  (val) => val.length === 5
+                )
                 .required("Zip code is required"),
               from: Yup.string()
                 .matches(zipregex, "invalid zip")
+                .test(
+                  "len",
+                  "Must be exactly 5 characters",
+                  (val) => val.length === 5
+                )
                 .required("zip code is required"),
               weight: Yup.number().required("Weight is required").positive(),
               length: Yup.number().positive(),
@@ -189,17 +210,14 @@ function MainSearch() {
               width: "",
               height: "",
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 1000);
+            onSubmit={(values) => {
+              searchPackage(values);
             }}
             validationSchema={Yup.object({
               weight: Yup.number().required("Weight is required").positive(),
-              length: Yup.number().positive(),
-              width: Yup.number().positive(),
-              height: Yup.number().positive(),
+              length: Yup.number().required("Length is required").positive(),
+              width: Yup.number().required("Width is required").positive(),
+              height: Yup.number().required("Height is required").positive(),
             })}
           >
             {(formik, isSubmitting) => (

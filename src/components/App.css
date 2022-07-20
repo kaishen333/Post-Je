@@ -13,3 +13,7 @@
 .sr-only {
   display: none;
 }
+
+.btn-primary{
+  margin-top: 1.5rem;
+}

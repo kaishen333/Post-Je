@@ -4,8 +4,15 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "./PackageSearchBar.css";
 import * as Yup from "yup";
+import { loadPackage } from "../../store/package/Package.actions.js";
+import { useDispatch } from "react-redux";
 
 function PackageSearchBar() {
+  const dispatch = useDispatch();
+  async function search(values) {
+    await dispatch(loadPackage(values));
+  }
+
   return (
     <Container className="bar">
       <h1>Compare courier services</h1>
@@ -16,17 +23,14 @@ function PackageSearchBar() {
           width: "",
           height: "",
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 1000);
+        onSubmit={(values) => {
+          search(values);
         }}
         validationSchema={Yup.object({
           weight: Yup.number().required("Weight is required").positive(),
-          length: Yup.number().positive(),
-          width: Yup.number().positive(),
-          height: Yup.number().positive(),
+          length: Yup.number().required("Length is required").positive(),
+          width: Yup.number().required("Width is required").positive(),
+          height: Yup.number().required("Height is required").positive(),
         })}
       >
         {(formik, isSubmitting) => (

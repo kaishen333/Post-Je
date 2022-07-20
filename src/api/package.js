@@ -1,10 +1,10 @@
 import API from "./client";
 
 // API interface for loading a user's order by order ID
-export const fetchPackage = async (length, width, height, weight) => {
+export const fetchPackage = async (values) => {
   try {
     const response = await API.get(
-      `orders/${length}/${width}/${height}/${weight}`
+      `package/${values.length}/${values.width}/${values.height}/${values.weight}`
     );
 
     return response.data;

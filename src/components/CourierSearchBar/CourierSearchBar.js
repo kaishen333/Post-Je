@@ -5,15 +5,13 @@ import Row from "react-bootstrap/Row";
 import "./CourierSearchBar.css";
 import * as Yup from "yup";
 import { loadCourier } from "../../store/courier/Courier.actions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 function CourierSearchBar() {
   const zipregex = /([0-9]{5})/;
 
-
   const dispatch = useDispatch();
-
-  async function search (values) {
+  async function search(values) {
     await dispatch(loadCourier(values));
   }
 
@@ -35,9 +33,19 @@ function CourierSearchBar() {
         validationSchema={Yup.object({
           to: Yup.string()
             .matches(zipregex, "invalid zip")
+            .test(
+              "len",
+              "Must be exactly 5 characters",
+              (val) => val.length === 5
+            )
             .required("Zip code is required"),
           from: Yup.string()
             .matches(zipregex, "invalid zip")
+            .test(
+              "len",
+              "Must be exactly 5 characters",
+              (val) => val.length === 5
+            )
             .required("zip code is required"),
           weight: Yup.number().required("Weight is required").positive(),
           length: Yup.number().positive(),
