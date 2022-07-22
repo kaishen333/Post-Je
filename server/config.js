@@ -2,10 +2,10 @@
 module.exports = {
   DB: {
     PGHOST: 'localhost',
-    PGUSER: 'admin',
+    PGUSER: 'admin', //postgres
     PGDATABASE:'post_je',
     PGPASSWORD: 'postgres',
-    PGPORT: 5433
+    PGPORT: 5433 //5432
   },
   PORT: 3000 
 }
