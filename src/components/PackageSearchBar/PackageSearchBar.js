@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -8,10 +8,18 @@ import { loadPackage } from "../../store/package/Package.actions.js";
 import { useDispatch } from "react-redux";
 
 function PackageSearchBar() {
+  const [packageList, setPackageList] = useState([]);
+
   const dispatch = useDispatch();
   async function search(values) {
-    await dispatch(loadPackage(values));
+    const data = await dispatch(loadPackage(values));
+    console.log(data.payload.package);
+    setPackageList(data.payload.package);
   }
+
+  useEffect(() => {
+    search();
+  }, []);
 
   return (
     <Container className="bar">

@@ -11,6 +11,7 @@ const pool = new Pool({
   port: DB.PGPORT
 });
 
+
 module.exports = {
   query: (text, params) => pool.query(text, params)
 }

@@ -6,9 +6,9 @@ module.exports = class packageInfoService {
   async get(options) {
     try {
       // Load products
-      const products = await ProductModelInstance.find(options);
-
-      return products;
+      const packages = await PackageInfoModelInstance.find(options);
+      console.log(packages);
+      return packages;
     } catch (err) {
       throw err;
     }

@@ -89,10 +89,11 @@ module.exports = (app) => {
             console.log(simprice);
             var temp = {
               courier: cour[i],
-              price: simprice,
+              price: cour[i] == "Pgeon" ? obj.data.price : simprice.toFixed(2),
               type: "pickup",
               prepaid: "-",
             };
+            //https://www.javascripttutorial.net/object/convert-an-object-to-an-array-in-javascript/
             priceobj[i] = temp;
           }
           console.log(priceobj);

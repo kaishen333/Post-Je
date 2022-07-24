@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import "./CourierResultTable.css";
 
 import Container from "react-bootstrap/Container";
@@ -68,7 +68,7 @@ function CourierResultTable() {
       .then((reuslt) => setCourierList(reuslt));
   }, []);
 
-  const body  = useSelector((state) => state.couriers);
+  const body = useSelector((state) => state.couriers);
   console.log(body);
 
   const customTotal = (from, to, size) => (
