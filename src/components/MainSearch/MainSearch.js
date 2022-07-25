@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { Formik, Field, Form } from "formik";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -9,6 +10,7 @@ import { loadPackage } from "../../store/package/Package.actions.js";
 import { useDispatch } from "react-redux";
 
 function MainSearch() {
+   let navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(1);
   const handleClick = (index) => setActiveIndex(index);
   const checkActive = (index, className) =>
@@ -17,8 +19,9 @@ function MainSearch() {
 
   const dispatch = useDispatch();
   async function searchCourier(values) {
-    window.location = "/courier";
-    await dispatch(loadCourier(values));
+    const data = await dispatch(loadCourier(values));
+    navigate("/courier", { state: data });
+    // window.location = "/courier";
   }
   async function searchPackage(values) {
     window.location = "/package";

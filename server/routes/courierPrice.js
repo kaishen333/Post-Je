@@ -98,7 +98,7 @@ module.exports = (app) => {
           }
           console.log(priceobj);
           res.send(priceobj);
-        });
+        }); 
       } catch (err) {
         next(err);
       }
