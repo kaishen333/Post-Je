@@ -10,7 +10,7 @@ import { loadPackage } from "../../store/package/Package.actions.js";
 import { useDispatch } from "react-redux";
 
 function MainSearch() {
-   let navigate = useNavigate();
+  let navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(1);
   const handleClick = (index) => setActiveIndex(index);
   const checkActive = (index, className) =>
@@ -21,11 +21,10 @@ function MainSearch() {
   async function searchCourier(values) {
     const data = await dispatch(loadCourier(values));
     navigate("/courier", { state: data });
-    // window.location = "/courier";
   }
   async function searchPackage(values) {
-    window.location = "/package";
-    await dispatch(loadPackage(values));
+    const data = await dispatch(loadPackage(values));
+    navigate("/package", { state: data });
   }
 
   return (

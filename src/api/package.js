@@ -6,7 +6,7 @@ export const fetchPackage = async (values) => {
     const response = await API.get(
       `package/${values.length}/${values.width}/${values.height}/${values.weight}`
     );
-
+    console.log(response.data);
     return response.data;
   } catch (err) {
     throw err.response.data;

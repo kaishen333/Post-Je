@@ -19,7 +19,6 @@ module.exports = class PackageInfoModel {
       const values = [we, l, w];
 
       const result = await db.query(statement, values);
-      console.log(result.rows);
       if (result.rows?.length) {
         return result.rows;
       }

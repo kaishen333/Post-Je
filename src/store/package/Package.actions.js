@@ -6,9 +6,10 @@ export const loadPackage = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       const response = await fetchPackage(values);
-      return {
-        package: response,
-      };
+      return(response);
+      // return {
+      //   package: response,
+      // };
     } catch (err) {
       throw err;
     }

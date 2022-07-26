@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./PackageResult.css";
 import { loadPackage } from "../../store/package/Package.actions.js";
+
+import { Formik, Field, Form } from "formik";
+import * as Yup from "yup";
 
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -14,21 +18,30 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 
-import { Formik, Field, Form } from "formik";
-import * as Yup from "yup";
-
 function CourierResult() {
   const [packageList, setPackageList] = useState([]);
-
   const dispatch = useDispatch();
-  async function search(values) {
-    const data = await dispatch(loadPackage(values));
-    setPackageList(data.payload.package);
-  }
+  let location = useLocation();
 
   useEffect(() => {
-    search();
+    if (location.state != null) {
+      console.log("true");
+      console.log(location.state.payload);
+      var a = [],
+        b = location.state.payload;
+      for (let i = 0; i < Object.keys(b).length; i++) {
+        a.push(b[i]);
+      }
+      console.log(a);
+      setPackageList(a);
+    }
   }, []);
+
+  async function search(values) {
+    const data = await dispatch(loadPackage(values));
+    console.log(data.payload);
+    setPackageList(data.payload);
+  }
 
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {
@@ -40,14 +53,14 @@ function CourierResult() {
   }
 
   const selectOptions = {
-    1: "City",
-    2: "DHL",
-    3: "GDEX",
-    4: "J&T",
-    5: "Ninja",
-    6: "Pgeon",
-    7: "Poslaju",
-    8: "FedEx",
+    City: "City",
+    DHL: "DHL",
+    GDEX: "GDEX",
+    "J&T": "J&T",
+    Ninja: "Ninja",
+    Pgeon: "Pgeon",
+    Poslaju: "Poslaju",
+    FedEx: "FedEx",
   };
 
   const columns = [
@@ -113,12 +126,12 @@ function CourierResult() {
     disablePageTitle: true,
     sizePerPageList: [
       {
-        text: "5",
-        value: 5,
+        text: "8",
+        value: 8,
       },
       {
-        text: "10",
-        value: 10,
+        text: "16",
+        value: 16,
       },
       {
         text: "All",

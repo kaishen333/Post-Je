@@ -7,7 +7,6 @@ module.exports = class packageInfoService {
     try {
       // Load products
       const packages = await PackageInfoModelInstance.find(options);
-      console.log(packages);
       return packages;
     } catch (err) {
       throw err;

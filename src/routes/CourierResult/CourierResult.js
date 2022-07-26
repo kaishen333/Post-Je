@@ -27,17 +27,16 @@ function CourierResult() {
   let location = useLocation();
 
   useEffect(() => {
-    console.log(location.state.payload);
-    var a = [],
-      b = location.state.payload;
-    for (let i = 0; i < Object.keys(b).length; i++) {
-      a.push(b[i]);
+    if (location.state != null) {
+      console.log(location.state.payload);
+      var a = [],
+        b = location.state.payload;
+      for (let i = 0; i < Object.keys(b).length; i++) {
+        a.push(b[i]);
+      }
+      console.log(a);
+      setCourierList(a);
     }
-    console.log(a);
-    setCourierList(a);
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((reuslt) => console.log(reuslt));
   }, []);
 
   async function search(values) {
