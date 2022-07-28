@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import * as ReactDOM from "react-dom";
 import "./CourierResult.css";
 import { loadCourier } from "../../store/courier/Courier.actions";
 
@@ -18,11 +19,20 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import mapStyles from "../../mapStyles";
 
 function CourierResult() {
   const zipregex = /([0-9]{5})/;
   const [courierList, setCourierList] = useState([]);
+  const [userLat, setUserLat] = useState();
+  const [userLong, setUserLong] = useState();
+  const [markers, setMarkers] = useState([]);
   const dispatch = useDispatch();
   let location = useLocation();
 
@@ -37,6 +47,12 @@ function CourierResult() {
       console.log(a);
       setCourierList(a);
     }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      setUserLat(position.coords.latitude);
+      setUserLong(position.coords.longitude);
+      console.log(userLat, userLong);
+    });
   }, []);
 
   async function search(values) {
@@ -151,10 +167,51 @@ function CourierResult() {
     height: "400px",
   };
 
+  const mapOptions = {
+    styles: mapStyles,
+    disableDefaultUI: true,
+    zoomControl: true,
+    disableDoubleClickZoom: true,
+  };
+
   const center = {
     lat: 4.3401,
     lng: 101.143,
   };
+
+  const handleOnLoad = (map) => {
+    const google = window.google;
+    const controlButtonDiv1 = document.createElement("div");
+    const controlButtonDiv2 = document.createElement("div");
+    ReactDOM.render(
+      <button
+        className="mapButton"
+        onClick={() => map.panTo({ lat: userLat, lng: userLong })}
+      >
+        Pan to Current Location
+      </button>,
+      controlButtonDiv1
+    );
+    ReactDOM.render(
+      <button
+        className="mapButton"
+        onClick={() => console.log(map.getCenter().lat())}
+      >
+        Search Drop-off centers
+      </button>,
+      controlButtonDiv2
+    );
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv1);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv2);
+  };
+
+  const onMapClick = React.useCallback((map) => {
+    setMarkers({
+      lat: map.latLng.lat(),
+      lng: map.latLng.lng(),
+    });
+    console.log(map.getCenter().lat());
+  }, []);
 
   return (
     <Container>
@@ -315,12 +372,22 @@ function CourierResult() {
         <Container className="googmaps">
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
             zoom={15}
-            disableDoubleClickZoom={true}
-            mapTypeId="satellite"
+            center={center}
+            options={mapOptions}
+            onClick={(map) => {
+              onMapClick(map);
+            }}
+            onLoad={(map) => handleOnLoad(map)}
           >
-            {/* Child components, such as markers, info windows, etc. */}
+            {/* Child components, such as markers, info windows, etc. */}=
+            <Marker
+              key={`${markers.lat}-${markers.lng}`}
+              position={{ lat: markers.lat, lng: markers.lng }}
+              // onClick={() => {
+              //   setSelected(marker);
+              // }}
+            />
             <></>
           </GoogleMap>
         </Container>

@@ -26,6 +26,13 @@
   margin: 1.5rem 0 1.5rem 0;
 }
 
+.mapButton {
+  margin-top: 0.45rem;
+  height: 2.5rem;
+  width: fit-content;
+  font-size: 1rem;
+}
+
 /* table */
 .react-bootstrap-table table {
   table-layout: auto;
