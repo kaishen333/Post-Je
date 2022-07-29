@@ -33,6 +33,7 @@ function CourierResult() {
   const [userLat, setUserLat] = useState();
   const [userLong, setUserLong] = useState();
   const [markers, setMarkers] = useState([]);
+  const [mapref, setMapRef] = useState(null);
   const dispatch = useDispatch();
   let location = useLocation();
 
@@ -51,7 +52,6 @@ function CourierResult() {
     navigator.geolocation.getCurrentPosition((position) => {
       setUserLat(position.coords.latitude);
       setUserLong(position.coords.longitude);
-      console.log(userLat, userLong);
     });
   }, []);
 
@@ -180,6 +180,7 @@ function CourierResult() {
   };
 
   const handleOnLoad = (map) => {
+    setMapRef(map);
     const google = window.google;
     const controlButtonDiv1 = document.createElement("div");
     const controlButtonDiv2 = document.createElement("div");
@@ -205,14 +206,17 @@ function CourierResult() {
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv2);
   };
 
-  const onMapClick = React.useCallback((map) => {
+  const onMapClick = (map) => {
     setMarkers({
       lat: map.latLng.lat(),
       lng: map.latLng.lng(),
     });
-    console.log(map.getCenter().lat());
-  }, []);
-
+    mapref.panTo({
+      lat: map.latLng.lat(),
+      lng: map.latLng.lng(),
+    });
+    mapref.setZoom(14.5);
+  };
   return (
     <Container>
       <Container className="bar">
@@ -375,10 +379,8 @@ function CourierResult() {
             zoom={15}
             center={center}
             options={mapOptions}
-            onClick={(map) => {
-              onMapClick(map);
-            }}
-            onLoad={(map) => handleOnLoad(map)}
+            onDblClick={onMapClick}
+            onLoad={handleOnLoad}
           >
             {/* Child components, such as markers, info windows, etc. */}=
             <Marker
