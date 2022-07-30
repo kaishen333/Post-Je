@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import * as ReactDOM from "react-dom";
 import "./CourierResult.css";
 import { loadCourier } from "../../store/courier/Courier.actions";
+import { loadGoogleMaps } from "../../store/googleMaps/GoogleMaps.actions";
 
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
@@ -30,6 +31,7 @@ import mapStyles from "../../mapStyles";
 function CourierResult() {
   const zipregex = /([0-9]{5})/;
   const [courierList, setCourierList] = useState([]);
+  const [dropoffList, setDropoffList] = useState([]);
   const [userLat, setUserLat] = useState();
   const [userLong, setUserLong] = useState();
   const [markers, setMarkers] = useState([]);
@@ -68,6 +70,24 @@ function CourierResult() {
     setCourierList(a);
   }
 
+  async function searchDrop(map) {
+    const obj = {
+      sahi: map.getBounds().Sa.hi,
+      salo: map.getBounds().Sa.lo,
+      vbhi: map.getBounds().vb.hi,
+      vblo: map.getBounds().vb.lo,
+    };
+    console.log(obj);
+    const data = await dispatch(loadGoogleMaps(obj));
+    // console.log(data.payload);
+    // var a = [],
+    //   b = data.payload;
+    // for (let i = 0; i < Object.keys(b).length; i++) {
+    //   a.push(b[i]);
+    // }
+    // console.log(a);
+    // setCourierList(a);
+  }
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {
     return (
@@ -194,10 +214,7 @@ function CourierResult() {
       controlButtonDiv1
     );
     ReactDOM.render(
-      <button
-        className="mapButton"
-        onClick={() => console.log(map.getCenter().lat())}
-      >
+      <button className="mapButton" onClick={() => searchDrop(map)}>
         Search Drop-off centers
       </button>,
       controlButtonDiv2

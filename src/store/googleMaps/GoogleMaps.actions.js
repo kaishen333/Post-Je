@@ -3,12 +3,13 @@ import { fetchGoogleMaps } from "../../api/google-maps";
 
 export const loadGoogleMaps = createAsyncThunk(
   "courier/loadGoogleMaps",
-  async (params, thunkAPI) => {
+  async (values, thunkAPI) => {
     try {
-      const response = await fetchGoogleMaps();
-      return {
-        package: response,
-      };
+      const response = await fetchGoogleMaps(values);
+      return (response);
+      // return {
+      //   package: response,
+      // };
     } catch (err) {
       throw err;
     }
