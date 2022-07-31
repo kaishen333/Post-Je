@@ -86,7 +86,7 @@ function CourierResult() {
     //   a.push(b[i]);
     // }
     // console.log(a);
-    // setCourierList(a);
+    // setDropoffList(a);
   }
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {
