@@ -36,6 +36,7 @@ function CourierResult() {
   const [userLong, setUserLong] = useState();
   const [markers, setMarkers] = useState([]);
   const [mapref, setMapRef] = useState(null);
+  const [activeMarker, setActiveMarker] = useState(null);
   const dispatch = useDispatch();
   let location = useLocation();
 
@@ -79,14 +80,14 @@ function CourierResult() {
     };
     console.log(obj);
     const data = await dispatch(loadGoogleMaps(obj));
-    // console.log(data.payload);
-    // var a = [],
-    //   b = data.payload;
-    // for (let i = 0; i < Object.keys(b).length; i++) {
-    //   a.push(b[i]);
-    // }
-    // console.log(a);
-    // setDropoffList(a);
+    console.log(data.payload);
+    var a = [],
+      b = data.payload;
+    for (let i = 0; i < Object.keys(b).length; i++) {
+      a.push(b[i]);
+    }
+    console.log(a);
+    setDropoffList(a);
   }
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {
@@ -234,6 +235,14 @@ function CourierResult() {
     });
     mapref.setZoom(14.5);
   };
+
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
+
   return (
     <Container>
       <Container className="bar">
@@ -407,6 +416,19 @@ function CourierResult() {
               //   setSelected(marker);
               // }}
             />
+            {dropoffList.map(({ id, name, position }) => (
+              <Marker
+                key={id}
+                position={position}
+                onClick={() => handleActiveMarker(id)}
+              >
+                {activeMarker === id ? (
+                  <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                    <div>{name}</div>
+                  </InfoWindow>
+                ) : null}
+              </Marker>
+            ))}
             <></>
           </GoogleMap>
         </Container>
