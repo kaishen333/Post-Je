@@ -219,7 +219,7 @@ function MainSearch() {
               weight: Yup.number().required("Weight is required").positive(),
               length: Yup.number().required("Length is required").positive(),
               width: Yup.number().required("Width is required").positive(),
-              height: Yup.number().required("Height is required").positive(),
+              height: Yup.number().min(0),
             })}
           >
             {(formik, isSubmitting) => (

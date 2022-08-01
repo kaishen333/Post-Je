@@ -9,6 +9,7 @@ import * as Yup from "yup";
 
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
 
 import BootstrapTable from "react-bootstrap-table-next";
@@ -46,9 +47,30 @@ function CourierResult() {
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {
     return (
-      <Button variant="success" onClick={() => {}}>
+      <Button
+        variant="success"
+        onClick={(e) => {
+          e.preventDefault();
+          window.open(row.link);
+        }}
+      >
         Order
       </Button>
+    );
+  }
+  function courierImg(cell, row, rowIndex, formatExtraData) {
+    return (
+      <span>
+        <Image
+          style={{
+            height: row.courier != "Ninja" ? "35px" : "40px",
+          }}
+          src={require(row.courier != "Ninja"
+            ? "./poslaju.png"
+            : "./ninja.png")}
+        />
+        {/* <span>{cell}</span> */}
+      </span>
     );
   }
 
@@ -72,6 +94,7 @@ function CourierResult() {
       filter: selectFilter({
         options: selectOptions,
       }),
+      formatter: courierImg,
     },
     {
       dataField: "weight",
@@ -158,7 +181,7 @@ function CourierResult() {
             weight: Yup.number().required("Weight is required").positive(),
             length: Yup.number().required("Length is required").positive(),
             width: Yup.number().required("Width is required").positive(),
-            height: Yup.number().required("Height is required").positive(),
+            height: Yup.number().min(0),
           })}
         >
           {(formik, isSubmitting) => (
