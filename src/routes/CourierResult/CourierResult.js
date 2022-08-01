@@ -35,6 +35,7 @@ function CourierResult() {
   const [userLat, setUserLat] = useState();
   const [userLong, setUserLong] = useState();
   const [markers, setMarkers] = useState([]);
+  const [center, setcenter] = useState([]);
   const [mapref, setMapRef] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function CourierResult() {
       setUserLat(position.coords.latitude);
       setUserLong(position.coords.longitude);
     });
+    setcenter(centerco);
   }, []);
 
   async function search(values) {
@@ -78,13 +80,11 @@ function CourierResult() {
       vbhi: map.getBounds().vb.hi,
       vblo: map.getBounds().vb.lo,
     };
-    console.log(obj);
     const data = await dispatch(loadGoogleMaps(obj));
-    console.log(data.payload);
-    var a = [],
-      b = data.payload;
-    for (let i = 0; i < Object.keys(b).length; i++) {
-      a.push(b[i]);
+    var a = data.payload;
+    for (let i = 0; i < a.length; i++) {
+      const position = { lat: a[i].lat, lng: a[i].long };
+      a[i].position = position;
     }
     console.log(a);
     setDropoffList(a);
@@ -195,7 +195,7 @@ function CourierResult() {
     disableDoubleClickZoom: true,
   };
 
-  const center = {
+  const centerco = {
     lat: 4.3401,
     lng: 101.143,
   };
@@ -215,7 +215,13 @@ function CourierResult() {
       controlButtonDiv1
     );
     ReactDOM.render(
-      <button className="mapButton" onClick={() => searchDrop(map)}>
+      <button
+        className="mapButton"
+        onClick={() => {
+          map.setZoom(14.5);
+          searchDrop(map);
+        }}
+      >
         Search Drop-off centers
       </button>,
       controlButtonDiv2
@@ -416,13 +422,13 @@ function CourierResult() {
               //   setSelected(marker);
               // }}
             />
-            {dropoffList.map(({ id, name, position }) => (
+            {dropoffList.map(({ lat, name, position }) => (
               <Marker
-                key={id}
+                key={lat}
                 position={position}
-                onClick={() => handleActiveMarker(id)}
+                onClick={() => handleActiveMarker(lat)}
               >
-                {activeMarker === id ? (
+                {activeMarker === lat ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                     <div>{name}</div>
                   </InfoWindow>

@@ -7,11 +7,6 @@ module.exports = class courierPriceService {
     try {
       // Load products
       const couriers = await CourierPriceModelInstance.find(options);
-      const position = { lat: couriers.lat, lng: couriers.long };
-      couriers.push(position);
-      delete couriers.lat;
-      delete couriers.long;
-      console.log(couriers);
 
       return couriers;
     } catch (err) {
