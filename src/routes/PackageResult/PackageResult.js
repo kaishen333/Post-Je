@@ -58,16 +58,17 @@ function CourierResult() {
       </Button>
     );
   }
+
   function courierImg(cell, row, rowIndex, formatExtraData) {
     return (
       <span>
         <Image
           style={{
-            height: row.courier != "Ninja" ? "35px" : "40px",
+            height: row.courier !== "Ninja" ? "35px" : "40px",
           }}
           src={require(row.courier != "Ninja"
-            ? "./poslaju.png"
-            : "./ninja.png")}
+            ? "../Home/assets/poslaju.png"
+            : "../Home/assets/ninja.png")}
         />
         {/* <span>{cell}</span> */}
       </span>

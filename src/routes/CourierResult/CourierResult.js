@@ -11,6 +11,7 @@ import * as Yup from "yup";
 
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
 
 import BootstrapTable from "react-bootstrap-table-next";
@@ -43,13 +44,18 @@ function CourierResult() {
 
   useEffect(() => {
     if (location.state != null) {
-      console.log(location.state.payload);
       var a = [],
         b = location.state.payload;
       for (let i = 0; i < Object.keys(b).length; i++) {
-        a.push(b[i]);
+        if (
+          b[i].courier !== "iExpress" &&
+          b[i].courier !== "EasyParcel" &&
+          b[i].courier !== "ParcelHub" &&
+          b[i].courier !== "Mail Boxes Etc (MBE)"
+        ) {
+          a.push(b[i]);
+        }
       }
-      console.log(a);
       setCourierList(a);
     }
 
@@ -61,15 +67,19 @@ function CourierResult() {
   }, []);
 
   async function search(values) {
-    console.log(values);
     const data = await dispatch(loadCourier(values));
-    console.log(data.payload);
     var a = [],
       b = data.payload;
     for (let i = 0; i < Object.keys(b).length; i++) {
-      a.push(b[i]);
+      if (
+        b[i].courier !== "iExpress" &&
+        b[i].courier !== "EasyParcel" &&
+        b[i].courier !== "ParcelHub" &&
+        b[i].courier !== "Mail Boxes Etc (MBE)"
+      ) {
+        a.push(b[i]);
+      }
     }
-    console.log(a);
     setCourierList(a);
   }
 
@@ -98,6 +108,34 @@ function CourierResult() {
     );
   }
 
+  function courierImg(cell, row, rowIndex, formatExtraData) {
+    return (
+      <span>
+        <Image
+          style={{
+            height: row.courier !== "Ninja" ? "35px" : "40px",
+          }}
+          src={require(row.courier == "Poslaju"
+            ? "../Home/assets/poslaju.png"
+            : row.courier == "GDEX"
+            ? "../Home/assets/gdex.png"
+            : row.courier == "City"
+            ? "../Home/assets/city.png"
+            : row.courier == "DHL"
+            ? "../Home/assets/dhl.png"
+            : row.courier == "J&T"
+            ? "../Home/assets/j&t.png"
+            : row.courier == "Pgeon"
+            ? "../Home/assets/pgeon.png"
+            : row.courier == "FedEx"
+            ? "../Home/assets/fedex.png"
+            : "../Home/assets/ninja.png")}
+        />
+        <span>{cell}</span>
+      </span>
+    );
+  }
+
   const selectOptions = {
     City: "City",
     DHL: "DHL",
@@ -118,6 +156,7 @@ function CourierResult() {
       filter: selectFilter({
         options: selectOptions,
       }),
+      formatter: courierImg,
     },
     {
       dataField: "type",
