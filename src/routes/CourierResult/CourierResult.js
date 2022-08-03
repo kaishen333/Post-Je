@@ -108,6 +108,14 @@ function CourierResult() {
     );
   }
 
+  function packageLink(cell, row, rowIndex, formatExtraData) {
+    return (
+      <p>
+        <a href={row.prepaidLink != "-" ? row.prepaidLink : "javascript:void(0)"} target="_blank">{row.prepaid}</a>
+      </p>
+    );
+  }
+
   function courierImg(cell, row, rowIndex, formatExtraData) {
     return (
       <span>
@@ -131,7 +139,7 @@ function CourierResult() {
             ? "../Home/assets/fedex.png"
             : "../Home/assets/ninja.png")}
         />
-        <span>{cell}</span>
+        {/* <span>{cell}</span> */}
       </span>
     );
   }
@@ -167,6 +175,7 @@ function CourierResult() {
       dataField: "prepaid",
       text: "Pre-paid packaging suggestion",
       sort: true,
+      formatter: packageLink,
     },
     {
       dataField: "price",

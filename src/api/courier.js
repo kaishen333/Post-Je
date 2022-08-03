@@ -4,9 +4,12 @@ import API from "./client";
 export const fetchCourier = async (values) => {
   try {
     const response = await API.get(
-      `courier/${values.to}/${values.from}/${values.weight}/${values.length !== "" ? values.length : 0}/${values.width !== "" ? values.width : 0}/${values.height !== "" ? values.height : 0}`
+      `courier/${values.to}/${values.from}/${values.weight}/${
+        values.length !== "" ? values.length : 0
+      }/${values.width !== "" ? values.width : 0}/${
+        values.height !== "" ? values.height : 0
+      }`
     );
-
     return response.data;
   } catch (err) {
     throw err.response.data;

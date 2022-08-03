@@ -5,25 +5,16 @@ var request = require("request");
 const courierPriceService = require("../services/courierPriceService");
 const courierPriceServiceInstance = new courierPriceService();
 
+const PackageInfoService = require("../services/packageInfoService");
+const PackageInfoServiceInstance = new PackageInfoService();
+
 module.exports = (app) => {
   app.use("/api/courier", router);
 
   router.get(
     "/:to/:from/:weight/:length/:width/:height",
     async (req, res, next) => {
-      // var myHeaders = new Headers();
-      // myHeaders.append("apikey", "V6M4f74h9UVB5akc");
-      // myHeaders.append("Content-Type", "application/json");
-
       try {
-        // var data = JSON.stringify({
-        //   service: "PD",
-        //   from_postcode: req.params.from,
-        //   to_postcode: req.params.to,
-        //   weight: req.params.weight,
-        // });
-
-        console.log(req.params.length + req.params.width + req.params.height);
         var options = {
           method: "GET",
           url: "https://public-api-sandbox.pgeon.delivery/public/rate",
@@ -40,16 +31,6 @@ module.exports = (app) => {
             to_country: "my",
           }),
         };
-
-        // get object of courier
-        // create object with courier of length courier.obj
-        // sim price and insert into obj
-        // var dataObject = {
-        //   1: { courier: "pgeon", price: 33, type: "pickup", prepaid: "-" },
-        //   2: { courier: "pgeon", price: 33, type: "pickup", prepaid: "-" },
-        //   3: { courier: "pgeon", price: 33, type: "pickup", prepaid: "-" },
-        //   4: { courier: "pgeon", price: 33, type: "pickup", prepaid: "-" },
-        // };
 
         const cour = [
           "City",
@@ -80,25 +61,77 @@ module.exports = (app) => {
         request(options, function (error, response) {
           var priceobj = {};
           if (error) throw new Error(error);
-          console.log(response.body);
           const obj = JSON.parse(response.body);
           const price = { price: obj.data.price };
-          console.log(price);
           for (let i = 0; i < cour.length; i++) {
             var simprice = obj.data.price * generateRandomDouble();
-            console.log(simprice);
             var temp = {
               courier: cour[i],
               price: cour[i] == "Pgeon" ? obj.data.price : simprice.toFixed(2),
               type: "pickup",
               prepaid: "-",
+              prepaidLink: "-",
             };
             //https://www.javascripttutorial.net/object/convert-an-object-to-an-array-in-javascript/
             priceobj[i] = temp;
           }
-          console.log(priceobj);
-          res.send(priceobj);
-        }); 
+          const packageparams = {
+            length: req.params.length,
+            width: req.params.width,
+            height: req.params.height,
+            weight: req.params.weight,
+          };
+          searchPackage(packageparams, priceobj);
+        });
+
+        function findObjectMatch(response, responsei) {
+          return response.filter((obj) => {
+            return (
+              obj.courier === responsei.courier && obj.price === responsei.price
+            );
+          });
+        }
+
+        async function searchPackage(obj, courier) {
+          const response = await PackageInfoServiceInstance.get(obj);
+          console.log(response);
+          var total = [];
+          const comp = [];
+          const price = [];
+          // const jsonobj = JSON.stringify(response)
+          for (let i = 0; i < response.length; i++) {
+            if (comp.length == 0) {
+              const result = findObjectMatch(response, response[i]);
+              total.push(JSON.stringify(result));
+              comp.push(response[i].courier);
+              price.push(response[i].price);
+            } else {
+              if (comp.indexOf(response[i].courier) == -1) {
+                const result = findObjectMatch(response, response[i]);
+                total.push(JSON.stringify(result));
+                comp.push(response[i].courier);
+                price.push(response[i].price);
+              } else {
+                const loc = comp.indexOf(response[i].courier);
+                if (response[i].price < price[loc]) {
+                  const result = findObjectMatch(response, response[i]);
+                  total.splice(loc, 1, JSON.stringify(result));
+                  price.splice(loc, 1, response[i].price);
+                }
+              }
+            }
+          }
+          for (let i = 0; i < Object.keys(courier).length; i++) {
+            for (let y = 0; y < total.length; y++) {
+              if (courier[i].courier === JSON.parse(total[y])[0].courier) {
+                courier[i].prepaid = JSON.parse(total[y])[0].type;
+                courier[i].prepaidLink = JSON.parse(total[y])[0].link;
+              }
+            }
+          }
+          console.log(courier);
+          res.send(courier);
+        }
       } catch (err) {
         next(err);
       }
