@@ -85,10 +85,10 @@ function CourierResult() {
 
   async function searchDrop(map) {
     const obj = {
-      sahi: map.getBounds().Sa.hi,
-      salo: map.getBounds().Sa.lo,
-      vbhi: map.getBounds().vb.hi,
-      vblo: map.getBounds().vb.lo,
+      sahi: map.getBounds().Ra.hi,
+      salo: map.getBounds().Ra.lo,
+      vbhi: map.getBounds().ub.hi,
+      vblo: map.getBounds().ub.lo,
     };
     const data = await dispatch(loadGoogleMaps(obj));
     var a = data.payload;
@@ -96,7 +96,6 @@ function CourierResult() {
       const position = { lat: a[i].lat, lng: a[i].long };
       a[i].position = position;
     }
-    console.log(a);
     setDropoffList(a);
   }
   //table stuffs
