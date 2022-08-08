@@ -7,5 +7,5 @@ module.exports = {
     PGPASSWORD: 'postgres',
     PGPORT: 5432 //5432 5433
   },
-  PORT: 3000 
+  PORT: 5000 
 }
