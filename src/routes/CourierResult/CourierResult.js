@@ -63,6 +63,7 @@ function CourierResult() {
       setUserLat(position.coords.latitude);
       setUserLong(position.coords.longitude);
     });
+
     setcenter(centerco);
   }, []);
 
@@ -110,7 +111,12 @@ function CourierResult() {
   function packageLink(cell, row, rowIndex, formatExtraData) {
     return (
       <p>
-        <a href={row.prepaidLink != "-" ? row.prepaidLink : "javascript:void(0)"} target="_blank">{row.prepaid}</a>
+        <a
+          href={row.prepaidLink != "-" ? row.prepaidLink : "javascript:void(0)"}
+          target="_blank"
+        >
+          {row.prepaid}
+        </a>
       </p>
     );
   }
