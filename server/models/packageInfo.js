@@ -26,8 +26,13 @@ module.exports = class PackageInfoModel {
             return res.height >= h;
           });
           return newArray;
+        }else{
+          var newArray = obj.filter(function (res) {
+            return res.weight >= we;
+          });
+          return newArray;
         }
-        return result.rows;
+        // return result.rows;
       }
       return [];
     } catch (err) {

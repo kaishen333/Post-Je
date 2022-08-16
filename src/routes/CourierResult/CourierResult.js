@@ -249,8 +249,8 @@ function CourierResult() {
   };
 
   const centerco = {
-    lat: 4.3401,
-    lng: 101.143,
+    lat: 4.323982174966869,
+    lng: 101.14364646521427,
   };
 
   const handleOnLoad = (map) => {
@@ -281,6 +281,15 @@ function CourierResult() {
     );
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv1);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv2);
+    let timer1 = setTimeout(() => searchDrop(map), 1 * 1000);
+    let timer2 = setTimeout(
+      () => map.panTo({ lat: userLat, lng: userLong }),
+      1 * 1000
+    );
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   };
 
   const onMapClick = (map) => {
