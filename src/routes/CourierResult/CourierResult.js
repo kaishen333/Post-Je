@@ -267,24 +267,24 @@ function CourierResult() {
       </button>,
       controlButtonDiv1
     );
-    ReactDOM.render(
-      <button
-        className="mapButton"
-        onClick={() => {
-          map.setZoom(14.5);
-          searchDrop(map);
-        }}
-      >
-        Search Drop-off centers
-      </button>,
-      controlButtonDiv2
-    );
+    // ReactDOM.render(
+    //   <button
+    //     className="mapButton"
+    //     onClick={() => {
+    //       map.setZoom(14.5);
+    //       searchDrop(map);
+    //     }}
+    //   >
+    //     Search Drop-off centers
+    //   </button>,
+    //   controlButtonDiv2
+    // );
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv1);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv2);
-    let timer1 = setTimeout(() => searchDrop(map), 1 * 1000);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButtonDiv2);
+    let timer1 = setTimeout(() => searchDrop(map), 1300);
     let timer2 = setTimeout(
       () => map.panTo({ lat: userLat, lng: userLong }),
-      1 * 1000
+      1100
     );
     return () => {
       clearTimeout(timer1);
@@ -302,6 +302,7 @@ function CourierResult() {
       lng: map.latLng.lng(),
     });
     mapref.setZoom(14.5);
+    searchDrop(mapref);
   };
 
   const handleActiveMarker = (marker) => {
@@ -309,6 +310,12 @@ function CourierResult() {
       return;
     }
     setActiveMarker(marker);
+  };
+
+  const getIcon = (courierid) => {
+    var source =
+      courierid == 1 ? "../Home/assets/city.png" : "../Home/assets/city.png";
+    return source;
   };
 
   return (
@@ -484,11 +491,40 @@ function CourierResult() {
               //   setSelected(marker);
               // }}
             />
-            {dropoffList.map(({ lat, name, position }) => (
+            {dropoffList.map(({ courierid, lat, name, position }) => (
               <Marker
                 key={lat}
                 position={position}
                 onClick={() => handleActiveMarker(lat)}
+                icon={{
+                  // path: google.maps.SymbolPath.CIRCLE, getIcon(courierid)
+                  url: require(courierid == 1
+                    ? "../Home/assets/city.png"
+                    : courierid == 2
+                    ? "../Home/assets/dhl2.jpg"
+                    : courierid == 3
+                    ? "../Home/assets/gdex.png"
+                    : courierid == 4
+                    ? "../Home/assets/j&t.png"
+                    : courierid == 5
+                    ? "../Home/assets/ninja.png"
+                    : courierid == 6
+                    ? "../Home/assets/pgeon.png"
+                    : courierid == 8
+                    ? "../Home/assets/parcelhub.png"
+                    : courierid == 9
+                    ? "../Home/assets/easyparcel.png"
+                    : courierid == 10
+                    ? "../Home/assets/mbe.png"
+                    : courierid == 11
+                    ? "../Home/assets/iexp.png"
+                    : "../Home/assets/dhl.png"),
+                  fillColor: "#EB00FF",
+                  scaledSize: new window.google.maps.Size(
+                    courierid == 2 ? 50 : 65,
+                    courierid == 2 ? 25 : courierid == 9 ? 35 : 20
+                  ),
+                }}
               >
                 {activeMarker === lat ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>

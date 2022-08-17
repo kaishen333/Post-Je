@@ -227,7 +227,7 @@ COPY dropoff (id, locationid, courierid, lat, long, name) FROM stdin;
 8	319	2	5.3037849669234083	100.29451760909861	DHL Express Service Point (Bayan Lepas Free Industrial Estate)                                      
 9	319	2	5.3325716760938837	100.29336038468294	DHL eCommerce Premium ServicePoint - Bayan Lepas                                                    
 10	319	2	5.3325115956969098	100.29877199297766	DHL Express Service Point (Bayan Lepas)                                                             
-11	317	12	5.3540210351381567	100.308846296355	J&T Express Sunny Point (PEN404) Batu Uban                                                          
+11	317	4	5.3540210351381567	100.308846296355	J&T Express Sunny Point (PEN404) Batu Uban                                                          
 12	319	3	100.26590397542881	5.3008565847941078	GD Express Sdn Bhd                                                                                  
 13	322	1	5.3013938895938093	100.27157147293272	City-Link Express Bayan Lepas                                                                       
 14	319	5	5.3338749710404691	100.28915068807895	Ninjavan Bukit Jambul                                                                               
