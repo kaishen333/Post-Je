@@ -85,11 +85,12 @@ function CourierResult() {
   }
 
   async function searchDrop(map) {
+    console.log(map.getBounds());
     const obj = {
-      sahi: map.getBounds().Ra.hi,
-      salo: map.getBounds().Ra.lo,
-      vbhi: map.getBounds().ub.hi,
-      vblo: map.getBounds().ub.lo,
+      sahi: map.getBounds().Qa.hi,
+      salo: map.getBounds().Qa.lo,
+      vbhi: map.getBounds().yb.hi,
+      vblo: map.getBounds().yb.lo,
     };
     const data = await dispatch(loadGoogleMaps(obj));
     var a = data.payload;
