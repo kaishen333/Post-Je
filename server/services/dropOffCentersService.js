@@ -5,7 +5,6 @@ const DropOffCentersModelInstance = new DropOffCentersModel();
 module.exports = class dropOffCentersService {
   async get(options) {
     try {
-      console.log(options);
       // Load products
       const dropoff = await DropOffCentersModelInstance.find(options);
       return dropoff;

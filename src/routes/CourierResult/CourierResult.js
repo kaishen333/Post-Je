@@ -85,13 +85,14 @@ function CourierResult() {
   }
 
   async function searchDrop(map) {
-    console.log(map.getBounds());
+    const bounds = map.getBounds();
     const obj = {
-      sahi: map.getBounds().Qa.hi,
-      salo: map.getBounds().Qa.lo,
-      vbhi: map.getBounds().yb.hi,
-      vblo: map.getBounds().yb.lo,
+      sahi: bounds.Bb.hi,
+      salo: bounds.Bb.lo,
+      vbhi: bounds.Va.hi,
+      vblo: bounds.Va.lo,
     };
+    console.log(bounds);
     const data = await dispatch(loadGoogleMaps(obj));
     var a = data.payload;
     for (let i = 0; i < a.length; i++) {
@@ -99,6 +100,7 @@ function CourierResult() {
       a[i].position = position;
     }
     setDropoffList(a);
+    console.log(dropoffList);
   }
   //table stuffs
   function linkFollow(cell, row, rowIndex, formatExtraData) {

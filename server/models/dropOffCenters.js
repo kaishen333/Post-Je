@@ -5,12 +5,11 @@ module.exports = class DropOffCentersModel {
     try {
       const statement = `select courier.name, dropoff.* from dropoff
       INNER JOIN courier ON dropoff.courierid = courier.id
-      where long between $1 and $2
-      and lat between $3 and $4;`;
+      where lat between $1 and $2
+      and long between $3 and $4;`;
 
       const values = [options.salo, options.sahi, options.vblo, options.vbhi];
       console.log(values);
-
       const result = await db.query(statement, values);
       if (result.rows?.length) {
         console.log(result.rows);
